@@ -92,8 +92,16 @@ public class MainActivity extends AppCompatActivity {
         noteList.clear(); // Wyczyść starą listę przed wczytaniem nowej
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.query(DatabaseHelper.TABLE_NOTES,
-                null, null, null, null, null, null);
+        Cursor cursor = db.query(
+                DatabaseHelper.TABLE_NOTES,
+                null,
+                null,
+                null,
+                null,
+                null,
+                DatabaseHelper.COLUMN_ID + " DESC"   // TO JEST orderBy
+        );
+
 
         // Pętla po cursorze i dodawanie notatek do listy obiektów
         while (cursor.moveToNext()) {
