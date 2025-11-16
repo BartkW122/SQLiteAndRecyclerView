@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Inicjalizacja listy i adaptera
         noteList = new ArrayList<>();
-        adapter = new NoteAdapter(noteList); // Przekaż pustą listę na start
+        adapter = new NoteAdapter(noteList,id->{
+            Log.d("id",Long.toString(id));
+            deleteNote(id);
+        });
 
         // Ustawienie RecyclerView
         notesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        loadNotes(); // Załaduj notatki przy starcie
+        loadNotes();// Załaduj notatki przy starcie
     }
 
     private void addNote() {
@@ -98,5 +102,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Poinformuj adapter, że dane się zmieniły
         adapter.notifyDataSetChanged();
+    }
+
+    private  void deleteNote(long id){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        db.delete(DatabaseHelper.TABLE_NOTES,DatabaseHelper.COLUMN_ID + " = ?", new String[]{Long.toString(id)});
+
+        loadNotes();
     }
 }

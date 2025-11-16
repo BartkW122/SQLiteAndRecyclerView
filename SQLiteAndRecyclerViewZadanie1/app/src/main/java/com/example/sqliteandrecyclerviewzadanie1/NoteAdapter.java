@@ -7,13 +7,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+import android.util.Log;
+
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
-    private List<Note> noteList;
+    public interface OnItemClickListener {
+        void onItemClick(long id);
+    }
 
-    public NoteAdapter(List<Note> noteList) {
+    private List<Note> noteList;
+    private OnItemClickListener listener;
+
+    public NoteAdapter(List<Note> noteList,OnItemClickListener listener) {
         this.noteList = noteList;
+        this.listener = listener;
     }
 
     // Ta metoda tworzy nowy ViewHolder, gdy RecyclerView go potrzebuje.
@@ -30,6 +38,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         Note currentNote = noteList.get(position);
         holder.id.setText(Long.toString(currentNote.getId()));
         holder.Text.setText(currentNote.getText());
+
+        holder.itemView.setOnClickListener(v->{
+            listener.onItemClick(currentNote.getId());
+        });
     }
 
     // Ta metoda zwraca liczbę elementów na liście.
