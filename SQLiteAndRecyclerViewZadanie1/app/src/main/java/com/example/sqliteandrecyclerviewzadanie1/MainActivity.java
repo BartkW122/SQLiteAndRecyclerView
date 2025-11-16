@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Pętla po cursorze i dodawanie notatek do listy obiektów
         while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
             String text = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NOTE));
             noteList.add(new Note(id, text));
         }
