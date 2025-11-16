@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
+    private TextView infoPusta;
     private EditText noteInput;
     private Button saveButton;
     private RecyclerView notesRecyclerView;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dbHelper = new DatabaseHelper(this);
+        infoPusta = findViewById(R.id.infoPusta);
+        infoPusta.setVisibility(View.GONE);
         noteInput = findViewById(R.id.noteInput);
         saveButton = findViewById(R.id.saveButton);
         notesRecyclerView = findViewById(R.id.notesRecyclerView);
@@ -102,6 +106,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Poinformuj adapter, że dane się zmieniły
         adapter.notifyDataSetChanged();
+
+        if(noteList.isEmpty()){
+            notesRecyclerView.setVisibility(View.GONE);
+            infoPusta.setVisibility(View.VISIBLE);
+        }
+        if(!noteList.isEmpty()){
+            notesRecyclerView.setVisibility(View.VISIBLE);
+            infoPusta.setVisibility(View.GONE);
+        }
     }
 
     private  void deleteNote(long id){
